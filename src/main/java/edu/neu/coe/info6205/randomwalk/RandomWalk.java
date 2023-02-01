@@ -4,6 +4,8 @@
 
 package edu.neu.coe.info6205.randomwalk;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Random;
 
 public class RandomWalk {
@@ -20,9 +22,8 @@ public class RandomWalk {
      * @param dy the distance he moves in the y direction
      */
     private void move(int dx, int dy) {
-        // FIXME do move by replacing the following code
-         throw new RuntimeException("Not implemented");
-        // END 
+        this.x += dx;
+        this.y += dy;
     }
 
     /**
@@ -31,8 +32,9 @@ public class RandomWalk {
      * @param m the number of steps the drunkard takes
      */
     private void randomWalk(int m) {
-        // FIXME
-        // END 
+        for (int i = 0; i < m; i++) {
+            randomMove();
+        }
     }
 
     /**
@@ -51,9 +53,7 @@ public class RandomWalk {
      * @return the (Euclidean) distance from the origin to the current position.
      */
     public double distance() {
-        // FIXME by replacing the following code
-         return 0.0;
-        // END 
+        return Math.sqrt(this.x*this.x + this.y*this.y);
     }
 
     /**
@@ -76,11 +76,29 @@ public class RandomWalk {
     public static void main(String[] args) {
         if (args.length == 0)
             throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
-        int m = Integer.parseInt(args[0]);
-        int n = 30;
+        StringBuilder outputBuilder = new StringBuilder();
+        outputBuilder.append("No of Steps(n),")
+                .append("No of Experiments,")
+                .append("Mean Distance (d),")
+                .append("\n");
+        int n = 25;
         if (args.length > 1) n = Integer.parseInt(args[1]);
-        double meanDistance = randomWalkMulti(m, n);
-        System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+        int m;
+        for (String s : args[0].split(",")) {
+            m = Integer.parseInt(s);
+            double meanDistance = randomWalkMulti(m, n);
+            System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+            outputBuilder.append(m).append(",")
+                    .append(n).append(",")
+                    .append(String.format("%.2f",meanDistance)).append("\n");
+        }
+        try {
+            PrintWriter writer = new PrintWriter("./src/main/java/edu/neu/coe/info6205/randomwalk/random-walk-exp-data.csv");
+            writer.write(outputBuilder.toString());
+            writer.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
 }

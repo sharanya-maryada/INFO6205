@@ -15,12 +15,14 @@ import java.util.List;
 public class ThreeSumQuadratic implements ThreeSum {
     /**
      * Construct a ThreeSumQuadratic on a.
+     *
      * @param a a sorted array.
      */
     public ThreeSumQuadratic(int[] a) {
         this.a = a;
         length = a.length;
     }
+
 
     public Triple[] getTriples() {
         List<Triple> triples = new ArrayList<>();
@@ -37,8 +39,31 @@ public class ThreeSumQuadratic implements ThreeSum {
      */
     public List<Triple> getTriples(int j) {
         List<Triple> triples = new ArrayList<>();
-        // FIXME : for each candidate, test if a[i] + a[j] + a[k] = 0.
-        // END 
+        Triple tp;
+        int i = j - 1;
+        int k = j + 1;
+        int sumVal;
+        while (i >= 0 && k <= length - 1) {
+            sumVal = a[i] + a[j] + a[k];
+            if (sumVal == 0) {
+                tp = new Triple(a[i], a[j], a[k]);
+                triples.add(tp);
+                if (i >= 0) {
+                    i--;
+                }
+                if (k <= length - 1) {
+                    k++;
+                }
+            } else if (sumVal > 0) {
+                if (i >= 0) {
+                    i--;
+                }
+            } else {
+                if (k <= length - 1) {
+                    k++;
+                }
+            }
+        }
         return triples;
     }
 

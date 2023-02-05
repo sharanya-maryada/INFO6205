@@ -29,7 +29,9 @@ public class Timer {
             lap();
         }
         pause();
-        return meanLapTime();
+        final double result = meanLapTime();
+        resume();
+        return result;
     }
 
     /**
